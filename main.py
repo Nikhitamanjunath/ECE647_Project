@@ -84,7 +84,7 @@ I, J = np.meshgrid(np.arange(NUM_CELLS), np.arange(NUM_SLICES))
 
 # Plotting
 fig = plt.figure(figsize=(14, 7))  # Increased figure size to accommodate two plots
-# fig2 = plt.figure(figsize=(14, 7))  # Increased figure size to accommodate two plots
+fig2 = plt.figure(figsize=(14, 7))  # Increased figure size to accommodate two plots
 
 
 # Plot original objective function
@@ -103,7 +103,12 @@ ax2.set_ylabel('Slice Index (i)')
 ax2.set_zlabel('Negative Objective Function Contribution')
 ax2.set_title('Concave Representation of Objective Function Value per (Slice, Cell)')
 
-
+ax3 = fig2.add_subplot(133)  # 1 row, 3 columns, third plot (no 3D projection)
+contour = ax3.contour(J, I, inverted_objective_values) # Note the order of I and J for typical contour plot
+ax3.set_xlabel('Cell Index (j)')
+ax3.set_ylabel('Slice Index (i)')
+ax3.set_title('Contour Plot of Objective Function')
+fig2.colorbar(contour, ax=ax3, label='Objective Function Value') # Add a colorbar for interpretation
 
 
 plt.tight_layout()  # Adjust layout to prevent overlap
