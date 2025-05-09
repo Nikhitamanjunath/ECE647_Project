@@ -1,3 +1,5 @@
 numpy
 cvxpy
 matplotlib
+ecos
+tqdm
