@@ -240,16 +240,24 @@ plt.tight_layout()
 static_throughput = [0.7, 0.3, 0.1]  # Gbps
 dynamic_throughput = [1.0, 0.5, 0.2]  # From primal solution
 
+# Create the first figure and plot the throughput comparison
+plt.figure(1)  # Create figure 1
 plt.bar(['eMBB (Static)', 'eMBB (Dynamic)'], [static_throughput[0], dynamic_throughput[0]])
 plt.ylabel('Throughput (Gbps)')
 plt.title('eMBB Throughput Comparison')
+plt.show()  # Display the first figure
 
+# Generate latency data
 latency_static = np.random.normal(1.5, 0.5, 1000)  # 70% <1ms
 latency_dynamic = np.random.normal(0.8, 0.2, 1000)  # 95% <1ms
 
-plt.hist(latency_static, bins=30, alpha=0.5, label='Static')
-plt.hist(latency_dynamic, bins=30, alpha=0.5, label='Dynamic')
+# Create the second figure and plot the latency comparison
+plt.figure(2)  # Create figure 2
+plt.hist(latency_static, bins=30, alpha=0.5, label='Static', density=True) # Added density=True
+plt.hist(latency_dynamic, bins=30, alpha=0.5, label='Dynamic', density=True) # Added density=True
 plt.axvline(1, color='r', linestyle='--', label='1ms Deadline')
 plt.xlabel('Latency (ms)')
+plt.ylabel('Probability Density') # Changed the y label
 plt.legend()
-plt.show()
+plt.title('URLLC Latency Comparison')
+plt.show()  # Display the second figure
