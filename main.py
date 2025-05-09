@@ -84,7 +84,7 @@ I, J = np.meshgrid(np.arange(NUM_CELLS), np.arange(NUM_SLICES))
 
 # Plotting
 fig = plt.figure(figsize=(14, 7))  # Increased figure size to accommodate two plots
-fig2 = plt.figure(figsize=(14, 7))  # Increased figure size to accommodate two plots
+# fig2 = plt.figure(figsize=(14, 7))  # Increased figure size to accommodate two plots
 
 
 # Plot original objective function
@@ -103,33 +103,6 @@ ax2.set_ylabel('Slice Index (i)')
 ax2.set_zlabel('Negative Objective Function Contribution')
 ax2.set_title('Concave Representation of Objective Function Value per (Slice, Cell)')
 
-def extract_values(filename):
-    iterations = []
-    pcost = []
-
-    # Read the file and extract the relevant columns
-    with open(filename, 'r') as file:
-        for line in file:
-            # Split each line into parts (columns)
-            columns = line.split()
-            if len(columns) > 2:
-                print(columns)
-                # try:
-                #     # Extract iteration number from the first column and pcost from the second column
-                #     iterations.append(int(columns[0]))
-                #     pcost.append(float(columns[1]))
-                # except ValueError:
-                #     # Skip lines that do not contain valid integer or float values
-                #     continue
-
-    return iterations, pcost
-extract_values('/Users/pradeeppatil/workspace/ECE647_Project/output.txt')
-# ax3 = fig2.add_subplot(123, projection='3d')
-# ax3.plot_surface(I, J, inverted_objective_values)
-# ax3.set_xlabel('Cell Index (j)')
-# ax3.set_ylabel('Slice Index (i)')
-# ax3.set_zlabel('Negative Objective Function Contribution')
-# ax3.set_title('Concave Representation of Objective Function Value per (Slice, Cell)')
 
 
 

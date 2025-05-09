@@ -39,5 +39,7 @@ filename = '/Users/pradeeppatil/workspace/ECE647_Project/output.txt'  # Change t
 # Extract iterations and pcost values
 iterations, pcost = extract_values(filename)
 
+print(iterations, pcost)
+
 # Plot the graph
 plot_iteration_vs_pcost(iterations, pcost)
