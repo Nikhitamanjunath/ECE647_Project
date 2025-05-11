@@ -218,24 +218,24 @@ fig2.colorbar(contour, ax=ax3, label='Objective Function Value')
 
 plt.tight_layout()
 
-static_throughput = [0.7, 0.3, 0.1]  # Gbps
-dynamic_throughput = [1.0, 0.5, 0.2]  # From primal solution
+static_throughput = [0.7, 0.3, 0.1] 
+dynamic_throughput = [1.0, 0.5, 0.2]
 
-plt.figure(1)  # Create figure 1
+plt.figure(1)  
 plt.bar(['eMBB (Static)', 'eMBB (Dynamic)'], [static_throughput[0], dynamic_throughput[0]])
 plt.ylabel('Throughput (Gbps)')
 plt.title('eMBB Throughput Comparison')
-plt.show()  # Display the first figure
+plt.show() 
 
 latency_static = np.random.normal(1.5, 0.5, 1000)  # 70% <1ms
 latency_dynamic = np.random.normal(0.8, 0.2, 1000)  # 95% <1ms
 
-plt.figure(2)  # Create figure 2
-plt.hist(latency_static, bins=30, alpha=0.5, label='Static', density=True) # Added density=True
-plt.hist(latency_dynamic, bins=30, alpha=0.5, label='Dynamic', density=True) # Added density=True
+plt.figure(2) 
+plt.hist(latency_static, bins=30, alpha=0.5, label='Static', density=True)
+plt.hist(latency_dynamic, bins=30, alpha=0.5, label='Dynamic', density=True) 
 plt.axvline(1, color='r', linestyle='--', label='1ms Deadline')
 plt.xlabel('Latency (ms)')
-plt.ylabel('Probability Density') # Changed the y label
+plt.ylabel('Probability Density') 
 plt.legend()
 plt.title('URLLC Latency Comparison')
-plt.show()  # Display the second figure
+plt.show()  
