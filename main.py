@@ -25,7 +25,7 @@ p = cp.Variable((NUM_SLICES, NUM_CELLS), nonneg=True)  # Power allocated to each
 f = cp.Variable(NUM_SLICES, nonneg=True)  # Fronthaul bandwidth allocated to each slice
 c = cp.Variable(NUM_SLICES, nonneg=True)  # Compute resources allocated to each slice
 
-# Objective function: Maximize the weighted sum-rate utility (proportional fairness)
+# Objective function: Maximize the weighted sum-rate utility 
 objective = cp.Maximize(
     cp.sum([
         weights[i] * cp.log(1 + (p[i, j] * h[i, j]) / NOISE_POWER)
@@ -146,14 +146,12 @@ def dual_decomposition(max_iters=100, alpha=0.1, tol=1e-3):
 print("\nRunning Dual Decomposition...")
 f_history, c_history, lambda_history, obj_history = dual_decomposition()
 
-# Print final dual solution
 print("\nDual Solution:")
 print("Final Fronthaul Allocation:", f_history[-1])
 print("Final Compute Allocation:", c_history[-1])
 print("Final Dual Variables (λ_f, λ_c):", lambda_history[-1])
 print("Final Dual Objective Value:", obj_history[-1])
 
-# Plotting results
 plt.figure(figsize=(15, 10))
 
 # Plot 1: Resource allocation convergence
@@ -207,7 +205,6 @@ inverted_objective_values = -objective_values
 # Create meshgrid for i, j
 I, J = np.meshgrid(np.arange(NUM_CELLS), np.arange(NUM_SLICES))
 
-# Plotting
 fig = plt.figure(figsize=(14, 7))
 fig2 = plt.figure(figsize=(14, 7))
 
@@ -219,7 +216,6 @@ ax1.set_ylabel('Slice Index (i)')
 ax1.set_zlabel('Objective Function Contribution')
 ax1.set_title('Objective Function Value per (Slice, Cell)')
 
-# Plot inverted objective function
 ax2 = fig.add_subplot(122, projection='3d')
 ax2.plot_surface(I, J, inverted_objective_values)
 ax2.set_xlabel('Cell Index (j)')
