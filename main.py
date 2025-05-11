@@ -19,13 +19,11 @@ KAPPA = 1000  # Processing cycles per bit (example)
 D = 100  # Packet size (example)
 URLLC_SLICES = [0]  # Assuming slice 0 is URLLC
 
-# Define optimization variables
 x = cp.Variable((NUM_SLICES, NUM_CELLS), nonneg=True)  # PRBs allocated to each slice in each cell
 p = cp.Variable((NUM_SLICES, NUM_CELLS), nonneg=True)  # Power allocated to each slice in each cell
 f = cp.Variable(NUM_SLICES, nonneg=True)  # Fronthaul bandwidth allocated to each slice
 c = cp.Variable(NUM_SLICES, nonneg=True)  # Compute resources allocated to each slice
 
-# Objective function: Maximize the weighted sum-rate utility 
 objective = cp.Maximize(
     cp.sum([
         weights[i] * cp.log(1 + (p[i, j] * h[i, j]) / NOISE_POWER)
@@ -34,7 +32,6 @@ objective = cp.Maximize(
     ])
 )
 
-# Constraints
 constraints = [
     # Radio Constraints
     cp.sum(p) <= P_MAX,  # Total power limit for each slice
@@ -58,11 +55,9 @@ constraints = [
     c >= 0
 ]
 
-# Solve the primal problem directly
 problem = cp.Problem(objective, constraints)
 problem.solve(solver=cp.ECOS, verbose=True)
 
-# Print the optimized values
 print("\nPrimal Solution:")
 print("Optimized PRBs (x):", x.value)
 print("Optimized Power (p):", p.value)
@@ -70,7 +65,6 @@ print("Optimized Fronthaul (f):", f.value)
 print("Optimized Compute (c):", c.value)
 print("Primal Objective Value:", problem.value)
 
-# Dual Decomposition Implementation
 def dual_decomposition(max_iters=100, alpha=0.1, tol=1e-3):
     """Dual decomposition algorithm for distributed optimization"""
     # Initialize dual variables
@@ -142,7 +136,6 @@ def dual_decomposition(max_iters=100, alpha=0.1, tol=1e-3):
     
     return f_history, c_history, lambda_history, obj_history
 
-# Run dual decomposition
 print("\nRunning Dual Decomposition...")
 f_history, c_history, lambda_history, obj_history = dual_decomposition()
 
@@ -154,7 +147,6 @@ print("Final Dual Objective Value:", obj_history[-1])
 
 plt.figure(figsize=(15, 10))
 
-# Plot 1: Resource allocation convergence
 plt.subplot(2, 2, 1)
 for i in range(NUM_SLICES):
     plt.plot([f[i] for f in f_history], label=f'Slice {i} Fronthaul')
@@ -171,7 +163,6 @@ plt.ylabel('Compute Allocation')
 plt.title('Compute Allocation Convergence')
 plt.legend()
 
-# Plot 2: Dual variable convergence
 plt.subplot(2, 2, 3)
 plt.plot([l[0] for l in lambda_history], label='λ_f (Fronthaul)')
 plt.plot([l[1] for l in lambda_history], label='λ_c (Compute)')
@@ -180,7 +171,6 @@ plt.ylabel('Dual Variable Value')
 plt.title('Dual Variable Convergence')
 plt.legend()
 
-# Plot 3: Objective value convergence
 plt.subplot(2, 2, 4)
 plt.plot(obj_history, label='Dual Objective')
 plt.axhline(y=problem.value, color='r', linestyle='--', label='Primal Objective')
@@ -192,8 +182,6 @@ plt.legend()
 plt.tight_layout()
 plt.show()
 
-# Original 3D plotting code (unchanged)
-# Compute objective function values per (i, j)
 objective_values = np.zeros((NUM_SLICES, NUM_CELLS))
 for i in range(NUM_SLICES):
     for j in range(NUM_CELLS):
@@ -202,13 +190,11 @@ for i in range(NUM_SLICES):
 
 inverted_objective_values = -objective_values
 
-# Create meshgrid for i, j
 I, J = np.meshgrid(np.arange(NUM_CELLS), np.arange(NUM_SLICES))
 
 fig = plt.figure(figsize=(14, 7))
 fig2 = plt.figure(figsize=(14, 7))
 
-# Plot original objective function
 ax1 = fig.add_subplot(121, projection='3d')
 ax1.plot_surface(I, J, objective_values)
 ax1.set_xlabel('Cell Index (j)')
@@ -232,22 +218,18 @@ fig2.colorbar(contour, ax=ax3, label='Objective Function Value')
 
 plt.tight_layout()
 
-# Static slicing (fixed 33% per slice)
 static_throughput = [0.7, 0.3, 0.1]  # Gbps
 dynamic_throughput = [1.0, 0.5, 0.2]  # From primal solution
 
-# Create the first figure and plot the throughput comparison
 plt.figure(1)  # Create figure 1
 plt.bar(['eMBB (Static)', 'eMBB (Dynamic)'], [static_throughput[0], dynamic_throughput[0]])
 plt.ylabel('Throughput (Gbps)')
 plt.title('eMBB Throughput Comparison')
 plt.show()  # Display the first figure
 
-# Generate latency data
 latency_static = np.random.normal(1.5, 0.5, 1000)  # 70% <1ms
 latency_dynamic = np.random.normal(0.8, 0.2, 1000)  # 95% <1ms
 
-# Create the second figure and plot the latency comparison
 plt.figure(2)  # Create figure 2
 plt.hist(latency_static, bins=30, alpha=0.5, label='Static', density=True) # Added density=True
 plt.hist(latency_dynamic, bins=30, alpha=0.5, label='Dynamic', density=True) # Added density=True
